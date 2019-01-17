@@ -1,0 +1,42 @@
+{% block content %}
+    <h1>Files</h1>
+
+    <p>
+
+        <form action="{% url 'upload_files' %}">
+            <input type="submit" value="upload files" />
+        </form>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Download</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for every_document in documents %}
+                <tr>
+                    <td>{{ every_document.description }}</td>
+                    <td>
+                        <form action="{% url 'edit_files' every_document.id %}" target="_blank">
+                            <input type="submit" value="modify files" />
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ every_document.document.url }}" class="btn btn-primary btn-sm" target="_blank" name="to_modify">
+                            open the doc
+                        </a>
+                    </td>
+                    <td>
+                        <form method="post" action="{% url 'delete_book' every_document.pk %}">
+                           {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
