@@ -112,7 +112,6 @@ def edit_files(request, file_id):
     docx_words_replace(exact_file, regex2, replace)
     if len(inputs_list) != 0:
         contract_name = inputs_list[0]
-        print(contract_name)
         exact_file.save(contract_name + '.docx')
     return render(request, 'edit_files.html', context={'variables': variables, "form": my_form})
 
