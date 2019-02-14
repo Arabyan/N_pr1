@@ -2,7 +2,7 @@ from django import forms
 from .models import DocFile
 
 from django import forms
-from .models import DocFile
+from .models import DocFile , DocEdited
 
 
 class DocumentForm(forms.ModelForm):
@@ -28,3 +28,9 @@ class VariablesForm(forms.Form):
         for name, value in self.cleaned_data.items():
             if name.startswith('custom_'):
                 yield (self.fields[name].label, value)
+
+
+class EditedDocumentForm(forms.ModelForm):
+    class Meta:
+        model = DocEdited
+        fields = ('edited_description','document_edited')

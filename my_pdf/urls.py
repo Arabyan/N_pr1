@@ -23,14 +23,12 @@ from django.conf.urls.static import  static
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('upload/', views.upload,name='upload' ),
     path('edit_files/', views.edit_files,name='edit_files' ),
     path('files/', views.file_list, name='file_list'),
     path('upload_files/', views.upload_files, name="upload_files"),
     path('admin/', admin.site.urls),
     path('files/<int:pk>/', views.delete_book, name='delete_book'),
     path('my_blanks/<int:file_id>/', views.edit_files, name='edit_files'),
-    # path('start_editing/<int:var_id>/', views.get_variables, name='get_variables')
 ]
 
 if settings.DEBUG:

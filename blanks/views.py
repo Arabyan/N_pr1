@@ -4,30 +4,21 @@ from django.views.generic import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import redirect
+from django.core.files import File
 
-
-from .forms import DocumentForm, RawProductionForm, VariablesForm
+from .forms import DocumentForm, RawProductionForm, VariablesForm, EditedDocumentForm
 from .models import DocFile, DocFields
 
-
+import os
 import re
 from docx import Document
 
-
+from django.contrib import messages
 
 class Home(TemplateView):
     template_name = 'home.html'
 
 
-def upload(request):
-    context={}
-    if request.method =='POST':
-        uploaded_file = request.FILES('document')
-        fs = FileSystemStorage()
-        name = fs.save(uploaded_file.name, uploaded_file)
-        context['url'] = fs.url(name)
-
-    return render(request, 'upload.html', context)
 
 
 def file_list(request):
@@ -86,14 +77,15 @@ def edit_files(request, file_id):
             if len(j) > 0:
                 temporary_list.append(j)
     variables = temporary_list
-    variables_set = sorted(set(variables), key=variables.index) # https://stackoverflow.com/questions/9792664/set-changes-element-order
+    #  https://stackoverflow.com/questions/9792664/set-changes-element-order
+    variables_set = sorted(set(variables), key=variables.index)
 
     inputs_amount = len(variables)
     print(variables)
     inputs_list = []
     my_form = VariablesForm(request.POST, variables=variables_set)
     # Start changing variables
-    if request.method == 'POST':
+    if request.method == 'POST' and my_form.is_valid():
         print(my_form)
         input_texts = my_form.get_input_text()
         for i, input_text in input_texts:
@@ -110,9 +102,20 @@ def edit_files(request, file_id):
     replace = r""
     docx_words_replace(exact_file, regex1, replace)
     docx_words_replace(exact_file, regex2, replace)
+
     if len(inputs_list) != 0:
         contract_name = inputs_list[0]
-        exact_file.save(contract_name + '.docx')
+        files_full_name = '{}.docx'.format(contract_name)
+        desktop = os.path.normpath(os.path.expanduser("~/Downloads/Cross2"))
+        try:
+            os.makedirs(desktop)
+        except FileExistsError:
+            # directory already exists
+            pass
+        exact_file.save(os.path.join(desktop, files_full_name))
+        messages.success(request, 'Saved on Desktop')
+        # nm = EditedDocumentForm(files_full_name, File(exact_file))
+        # nm.save()
     return render(request, 'edit_files.html', context={'variables': variables, "form": my_form})
 
 
@@ -122,15 +125,3 @@ def delete_book(request, pk):
         got_to_delete.delete()
     return redirect('file_list')
 
-
-
-#
-# my_regex = re.compile(r"\{(.*?)\}")
-# my_replace = r"replace_word"
-
-
-# def get_variables(request, var_id):
-#     if request.method == 'POST':
-#         file_to_edit = DocFile.objects.get(pk=var_id)
-#         print(file_to_edit)
-#     return render(request, 'edit_files.html', {'file_to_edit':file_to_edit})

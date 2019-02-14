@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
-
+from django.core.files.storage import FileSystemStorage
+from my_pdf.settings import PRIVATE_STORAGE_ROOT
 # Create your models here.
 from blanks.validators import validate_file_extension
 
@@ -18,12 +19,17 @@ class DocFile(models.Model):
         self.document.delete()
         super().delete(*args, **kwargs)
 
-    def edit_filez(self, *args, **kwargs):
-        super().save(*args, **kwargs)
 
-    def get_document_url(self):
-        if self.file:
-            return '/documents/2017/ + self.document.name + ".txt" '
-#
 class DocFields(models.Model):
     doc_fields = models.CharField( max_length=50)
+
+
+fs_edited = FileSystemStorage(location=PRIVATE_STORAGE_ROOT)
+
+
+class DocEdited(models.Model):
+    edited_description = models.CharField(max_length=250, blank=True)
+    document_edited = models.FileField(upload_to='documents_edited/',  storage=fs_edited)
+
+    def __str__(self):
+        return self.edited_description
