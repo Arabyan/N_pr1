@@ -15,10 +15,9 @@ from docx import Document
 
 from django.contrib import messages
 
-class Home(TemplateView):
-    template_name = 'home.html'
 
-
+def Home(request):
+    return render(request, 'home.html')
 
 
 def file_list(request):
@@ -106,14 +105,19 @@ def edit_files(request, file_id):
     if len(inputs_list) != 0:
         contract_name = inputs_list[0]
         files_full_name = '{}.docx'.format(contract_name)
-        desktop = os.path.normpath(os.path.expanduser("~/Downloads/Cross2"))
+        desktop = os.path.normpath(os.path.expanduser("~/Downloads/aca_docs"))
+        print(desktop,'kkkkkkkkkkkkkk' )
         try:
             os.makedirs(desktop)
         except FileExistsError:
             # directory already exists
             pass
         exact_file.save(os.path.join(desktop, files_full_name))
-        messages.success(request, 'Saved on Desktop')
+        messages.success(request, 'Saved in {}'.format(desktop))
+        #  exact_file.save(os.path.join(desktop, files_full_name))
+        #  html_name = 'Saved in <a href="file:///home/grigor/Downloads/Aca_docs/{}" target="_blank">downloads</a>'.format(
+        #     files_full_name)
+        # messages.success(request, html_name)
         # nm = EditedDocumentForm(files_full_name, File(exact_file))
         # nm.save()
     return render(request, 'edit_files.html', context={'variables': variables, "form": my_form})

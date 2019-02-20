@@ -1,17 +1,14 @@
+{% extends 'base.html' %}
 {% block content %}
     <h1>Files</h1>
 
-    <p>
 
-        <form action="{% url 'upload_files' %}">
-            <input type="submit" value="upload files" />
-        </form>
-    </p>
     <table class="table">
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Download</th>
+                <th>Modify files</th>
+                <th>Download Document</th>
                 <th>Delete</th>
             </tr>
         </thead>
@@ -21,12 +18,12 @@
                     <td>{{ every_document.description }}</td>
                     <td>
                         <form action="{% url 'edit_files' every_document.id %}" target="_blank">
-                            <input type="submit" value="modify files" />
+                            <input type="submit" value="modify" />
                         </form>
                     </td>
                     <td>
-                        <a href="{{ every_document.document.url }}" class="btn btn-primary btn-sm" target="_blank" name="to_modify">
-                            open the doc
+                        <a  href="{{ every_document.document.url }}" class="btn btn-primary btn-sm" target="_blank" name="to_modify">
+                            Download
                         </a>
                     </td>
                     <td>
