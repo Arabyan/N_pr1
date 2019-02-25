@@ -1,5 +1,10 @@
 Django==2.1
 django-crispy-forms==1.7.2
+django-db-file-storage==0.5.3
 lxml==4.3.0
+Pillow==5.4.1
+psycopg2==2.7.6.1
 python-docx==0.8.10
 pytz==2018.9
+
+
