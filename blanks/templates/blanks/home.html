@@ -4,6 +4,6 @@
     <form action="{% url 'upload_files' %}">
             <input type="submit" value="upload file" />
     </form>
-    <strong>Total users Reigstered </strong> {{ count
-    <p>Welcome to My Word document editor, {{ user.username }} </p>
+    <strong>Total users Reigstered </strong> {{ count }}
+    <p>Welcome to My  Document Editor Site,{% if user.is_authenticated %}{{ user.username }} {% else %} visitor{% endif %} </p>
 {% endblock %}
