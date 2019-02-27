@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('files/<int:pk>/', views.delete_book, name='delete_book'),
     path('my_blanks/<int:file_id>/', views.edit_files, name='edit_files'),
+    path('signup/',views.signup,  name='signup')
 ]
 
 if settings.DEBUG:

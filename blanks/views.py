@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect, get_object_or_404
-from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
-from django.core.files import File
+from .forms import DocumentForm,  VariablesForm
+from .models import DocFile
 
-from .forms import DocumentForm, RawProductionForm, VariablesForm, EditedDocumentForm
-from .models import DocFile, DocFields
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 import os
 import re
@@ -16,8 +14,12 @@ from docx import Document
 from django.contrib import messages
 
 
+
 def Home(request):
-    return render(request, 'home.html')
+    count = User.objects.count()
+    return render(request, 'home.html',{
+        'count': count
+    })
 
 
 def file_list(request):
@@ -129,3 +131,15 @@ def delete_book(request, pk):
         got_to_delete.delete()
     return redirect('file_list')
 
+
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {
+        'form': form
+    })
