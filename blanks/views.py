@@ -6,6 +6,8 @@ from .models import DocFile
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+# from django.contrib.auth import update_session_auth_hash
+
 
 import os
 import re
@@ -143,3 +145,9 @@ def signup(request):
     return render(request, 'registration/signup.html', {
         'form': form
     })
+
+# def settins(request):
+#     setin = User.objects.count()
+#     return render(request, 'changepass.html',{
+#         'setin': setin
+#     })

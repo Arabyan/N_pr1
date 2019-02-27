@@ -133,3 +133,8 @@ PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'private')
 
 LOGIN_REDIRECT_URL = 'Home'
 LOGOUT_REDIRECT_URL = 'Home'
+
+# PASS_CHANGE_URL = os.path.join(BASE_DIR, 'blanks/templates')
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'blanks/templates/registration'),
+)
