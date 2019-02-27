@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from blanks import views
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import  static
 
@@ -29,7 +29,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('files/<int:pk>/', views.delete_book, name='delete_book'),
     path('my_blanks/<int:file_id>/', views.edit_files, name='edit_files'),
-    path('signup/',views.signup,  name='signup')
+    path('signup/',views.signup,  name='signup'),
+    path('accounts/', include('django.contrib.auth.urls')),
+
 ]
 
 if settings.DEBUG:
