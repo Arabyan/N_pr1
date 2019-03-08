@@ -138,3 +138,6 @@ LOGOUT_REDIRECT_URL = 'Home'
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'blanks/templates/registration'),
 )
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

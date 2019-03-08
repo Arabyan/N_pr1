@@ -31,7 +31,7 @@ urlpatterns = [
     path('my_blanks/<int:file_id>/', views.edit_files, name='edit_files'),
     path('signup/',views.signup,  name='signup'),
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('settins/', views.settins, name='settins')
+    # path('settins/', views.settins, name='settins')z
 
 ]
 

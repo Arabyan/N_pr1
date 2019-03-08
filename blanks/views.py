@@ -14,7 +14,7 @@ import re
 from docx import Document
 
 from django.contrib import messages
-
+from django.contrib.auth import update_session_auth_hash
 
 
 def Home(request):
@@ -25,7 +25,7 @@ def Home(request):
 
 
 def file_list(request):
-    documents = DocFile.objects.all()
+    documents = DocFile.objects.all().filter(user=request.user)
     return render(request, 'file_list.html',{
         'documents': documents
     })
@@ -35,7 +35,9 @@ def upload_files(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            instance =form.save(commit=False)
+            instance.user = request.user
+            instance.save()
             return redirect("file_list")
     else:
         form = DocumentForm()
@@ -146,8 +148,6 @@ def signup(request):
         'form': form
     })
 
-# def settins(request):
-#     setin = User.objects.count()
-#     return render(request, 'changepass.html',{
-#         'setin': setin
-#     })
+
+def secret_page(request):
+    return render(request,'secret_page.html')
